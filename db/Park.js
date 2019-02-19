@@ -7,7 +7,10 @@ const Park = new mongoose.Schema({
   bathrooms: Boolean,
   parking: Boolean,
   misc: String,
-  voteValue: Number
+  voteValue: {
+    type: Number,
+    default: 0
+  }
 })
 
 module.exports = mongoose.model('Park', Park)
