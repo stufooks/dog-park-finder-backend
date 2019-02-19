@@ -26,16 +26,20 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   let currentVal = 0
-
-  Park.findOne({ _id: req.body.id})
+  Park.findOne({ _id: req.params.id })
     .then(park => {
-      currentVal = park.voteValue + 1
-    })
-
-  Park.findByIdAndUpdate(req.params.id, {$set: {voteValue: currentVal}})
-    .then(park => {
-      res.json(park)
-    })
+      if(req.body.upvote) {
+        currentVal = park.voteValue + 1
+      } else {
+        currentVal = park.voteValue - 1
+      }
+      })
+      .then(() => {
+        Park.findOneAndUpdate({ _id: req.params.id }, {$set: {voteValue: currentVal}}, {new: true})
+          .then(park => {
+            res.json(park)
+          })
+      })
 })
 
 router.delete('/:id', (req, res) => {
