@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jwt-simple");
+
+// const passport = require("../config/passport");
+const config = require("../config/config");
 
 const Park = require("../db/Park");
 
@@ -45,9 +49,18 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  Park.findByIdAndDelete(req.params.id).then(() => {
-    res.send("delete complete");
-  });
+  console.log(jwt.decode(req.body.token, config.jwtSecret))
+  Park.findById(req.params.id)
+    .then(park => {
+      if(park.author === jwt.decode(req.body.token, config.jwtSecret).email) {
+        Park.findByIdAndDelete(req.params.id)
+          .then(() => {
+            res.send('delete complete')
+          })
+      } else {
+        res.send('not authorized')
+      }
+    });
 });
 
 module.exports = router;
