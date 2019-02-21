@@ -32,11 +32,13 @@ router.post("/signup", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+  console.log('back end log in called')
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       if (user.password === req.body.password) {
+        console.log('got password')
         var payload = {
-          username: user.username
+          email: user.email
         };
         var token = jwt.encode(payload, config.jwtSecret);
         res.json({
