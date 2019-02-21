@@ -10,7 +10,8 @@ const Park = new mongoose.Schema({
   voteValue: {
     type: Number,
     default: 0
-  }
+  },
+  author: String
 })
 
 module.exports = mongoose.model('Park', Park)

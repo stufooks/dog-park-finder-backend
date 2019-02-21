@@ -12,13 +12,12 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   console.log('show method called')
   Park.findOne({ _id: req.params.id }).then(park => {
-    console.log(park)
     res.json(park);
   });
 });
 
 router.post("/", (req, res) => {
-  console.log('post request called')
+  console.log(req.body)
   Park.create(req.body).then(park => {
     res.json(park);
   });
