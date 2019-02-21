@@ -7,7 +7,6 @@ const config = require("../config/config");
 const User = require("../db/User");
 
 router.post("/signup", (req, res) => {
-  console.log('backend post signup called')
   let newUser = {
     email: req.body.email,
     password: req.body.password
@@ -20,7 +19,9 @@ router.post("/signup", (req, res) => {
             email: user.email
           };
           var token = jwt.encode(payload, config.jwtSecret);
-          res.json(token);
+          res.json({
+            token: token
+          });
         } else {
           res.sendStatus(401);
         }
@@ -32,11 +33,9 @@ router.post("/signup", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  console.log('back end log in called')
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
       if (user.password === req.body.password) {
-        console.log('got password')
         var payload = {
           email: user.email
         };
