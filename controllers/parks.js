@@ -8,7 +8,9 @@ const config = require("../config/config");
 const Park = require("../db/Park");
 
 router.get("/", (req, res) => {
-  Park.find({}).then(parks => {
+  Park.find({})
+  .sort([['voteValue', -1]])
+  .then(parks => {
     res.json(parks);
   });
 });
